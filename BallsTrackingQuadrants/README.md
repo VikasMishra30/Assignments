@@ -7,5 +7,5 @@ The program should have provisions for feeding a new video and output should be 
 Video to process:
 https://drive.google.com/file/d/1goI3aHVE29Gko9lpTzgi_g3CZZPjJq8w/view?usp=sharing
 
-Output:
+Output Video:
 https://drive.google.com/drive/folders/1U1Ezkn13Ex1DXfMwYIXa30tHV_u21i1U?usp=drive_link
