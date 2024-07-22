@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wine Shop Chatbot</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f5f5f5;
+            margin: 0;
+            padding: 0;
+        }
+        header {
+            background-color: #8b0000;
+            color: white;
+            padding: 10px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        header h1 {
+            margin: 0;
+        }
+        nav ul {
+            list-style: none;
+            display: flex;
+            margin: 0;
+            padding: 0;
+        }
+        nav ul li {
+            margin: 0 10px;
+        }
+        nav ul li a {
+            color: white;
+            text-decoration: none;
+        }
+        #chat-container {
+            position: fixed;
+            bottom: 0;
+            right: 20px;
+            width: 350px;
+            height: 400px;
+            border: 2px solid #8b0000;
+            border-radius: 10px;
+            background-color: white;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+            display: flex;
+            flex-direction: column;
+        }
+        #chat-header {
+            background-color: #8b0000;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            border-top-left-radius: 10px;
+            border-top-right-radius: 10px;
+        }
+        #messages {
+            flex: 1;
+            padding: 10px;
+            overflow-y: auto;
+            display: flex;
+            flex-direction: column;
+        }
+        .message {
+            margin-bottom: 10px;
+            padding: 10px;
+            border-radius: 10px;
+            max-width: 80%;
+        }
+        .user {
+            background-color: #e0e0e0;
+            align-self: flex-end;
+        }
+        .bot {
+            background-color: #d4edda;
+        }
+        #input-bar {
+            display: flex;
+            padding: 10px;
+            border-top: 1px solid #ddd;
+        }
+        #input-bar input {
+            flex: 1;
+            padding: 10px;
+            border-radius: 20px;
+            border: 1px solid #ddd;
+            outline: none;
+        }
+        #input-bar button {
+            padding: 10px 20px;
+            border-radius: 20px;
+            border: none;
+            background-color: #8b0000;
+            color: white;
+            cursor: pointer;
+            margin-left: 10px;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Wine Shop</h1>
+        <nav>
+            <ul>
+                <li><a href="#">Home</a></li>
+                <li><a href="#">Wine</a></li>
+                <li><a href="#">Spirits</a></li>
+                <li><a href="#">Beer</a></li>
+                <li><a href="#">Varietal Pack</a></li>
+                <li><a href="#">Gift Card</a></li>
+            </ul>
+        </nav>
+    </header>
+    <div id="chat-container">
+        <div id="chat-header">
+            <h2>Chat with us!</h2>
+        </div>
+        <div id="messages">
+            <!-- Messages will appear here -->
+        </div>
+        <div id="input-bar">
+            <input type="text" id="user-input" placeholder="Ask me about our wines...">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+    <footer>
+        <p>Contact us | Follow us | About us</p>
+    </footer>
+    <script>
+        function addMessage(content, sender) {
+            const messagesContainer = document.getElementById('messages');
+            const message = document.createElement('div');
+            message.classList.add('message', sender);
+            message.innerText = content;
+            messagesContainer.appendChild(message);
+            messagesContainer.scrollTop = messagesContainer.scrollHeight;
+        }
+
+        async function sendMessage() {
+            const userInput = document.getElementById('user-input');
+            const message = userInput.value.trim();
+            if (message === "") return;
+            
+            addMessage(message, 'user');
+            userInput.value = '';
+
+            const response = await fetch('/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ message: message })
+            });
+            const data = await response.json();
+            addMessage(data.message, 'bot');
+        }
+    </script>
+</body>
+</html>
